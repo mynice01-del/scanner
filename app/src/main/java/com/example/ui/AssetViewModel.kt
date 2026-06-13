@@ -163,7 +163,7 @@ class AssetViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun addManualAsset(tag: String, name: String, memo: String): Boolean {
-        if (!Regex("[A-Za-z]{2}\\d{10}").matches(tag)) {
+        if (!Regex("(?i)(CM|CZ|OM|OD|OP|ON|OE)\\d{9,10}").matches(tag)) {
             return false
         }
         val upperTag = tag.uppercase()
@@ -233,7 +233,8 @@ class AssetViewModel(application: Application) : AndroidViewModel(application) {
         val sb = java.lang.StringBuilder()
         sortedList.forEach { asset ->
             val dateStr = android.text.format.DateFormat.format("yyyy-MM-dd HH:mm", asset.timestamp).toString()
-            sb.append("${asset.tag}  ${asset.category}  $dateStr\n")
+            val warnSuffix = if (asset.tag.length == 11) " (⚠️오류수정필요)" else ""
+            sb.append("${asset.tag}  ${asset.category}  $dateStr$warnSuffix\n")
         }
         return sb.toString().trimEnd()
     }

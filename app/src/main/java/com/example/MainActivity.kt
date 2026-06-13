@@ -57,6 +57,8 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material.icons.filled.Sort
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -284,10 +286,10 @@ fun AssetScannerApp(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(4f / 3f)
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(28.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(28.dp))
+                    .aspectRatio(16f / 6f)
+                    .padding(horizontal = 12.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(16.dp))
                     .background(Color.Black)
             ) {
                 CameraPreview(
@@ -304,13 +306,13 @@ fun AssetScannerApp(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(24.dp),
+                        .padding(12.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Box(
                         modifier = Modifier
                             .width(220.dp)
-                            .height(64.dp)
+                            .height(56.dp)
                             .border(
                                 2.dp,
                                 if (isScanning) MaterialTheme.colorScheme.primaryContainer else Color.Gray.copy(alpha = 0.4f),
@@ -324,7 +326,7 @@ fun AssetScannerApp(
                             Box(
                                 modifier = Modifier
                                     .align(Alignment.TopStart)
-                                    .size(14.dp)
+                                    .size(12.dp)
                                     .border(
                                         width = 3.dp,
                                         color = cornerColor,
@@ -336,7 +338,7 @@ fun AssetScannerApp(
                             Box(
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)
-                                    .size(14.dp)
+                                    .size(12.dp)
                                     .border(
                                         width = 3.dp,
                                         color = cornerColor,
@@ -347,7 +349,7 @@ fun AssetScannerApp(
                             Box(
                                 modifier = Modifier
                                     .align(Alignment.BottomStart)
-                                    .size(14.dp)
+                                    .size(12.dp)
                                     .border(
                                         width = 3.dp,
                                         color = cornerColor,
@@ -358,7 +360,7 @@ fun AssetScannerApp(
                             Box(
                                 modifier = Modifier
                                     .align(Alignment.BottomEnd)
-                                    .size(14.dp)
+                                    .size(12.dp)
                                     .border(
                                         width = 3.dp,
                                         color = cornerColor,
@@ -384,14 +386,14 @@ fun AssetScannerApp(
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
-                        .padding(bottom = 12.dp)
-                        .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(12.dp))
-                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                        .padding(bottom = 6.dp)
+                        .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 10.dp, vertical = 2.dp)
                 ) {
                     Text(
-                        text = "영문 2자리 + 숫자 10자리 자산스티커 자동 인식",
+                        text = "영문 2자리 + 숫자 9~10자리 자산스티커 자동 인식",
                         color = Color.White,
-                        fontSize = 10.sp,
+                        fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 0.5.sp
                     )
@@ -402,9 +404,9 @@ fun AssetScannerApp(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(4f / 3f)
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(28.dp))
+                    .aspectRatio(16f / 6f)
+                    .padding(horizontal = 12.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(Color.Gray.copy(alpha = 0.1f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -438,7 +440,7 @@ fun AssetScannerApp(
         }
 
         // [FILTER & SEARCH INTERFACE]
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -524,7 +526,7 @@ fun AssetScannerApp(
         }
 
         // [CAPTURE QUEUE & LIST]
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -552,7 +554,7 @@ fun AssetScannerApp(
             }
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
         // [SORT OPTIONS ROW]
         val sortScrollState = rememberScrollState()
@@ -600,7 +602,7 @@ fun AssetScannerApp(
             )
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(2.dp))
 
         // Grid/List of Scanned Items
         Box(
@@ -641,7 +643,8 @@ fun AssetScannerApp(
                     items(assets, key = { it.id }) { asset ->
                         AssetQueueItem(
                             asset = asset,
-                            onEditClick = { viewModel.selectAssetForEdit(asset) }
+                            onEditClick = { viewModel.selectAssetForEdit(asset) },
+                            onDeleteClick = { viewModel.deleteAsset(asset) }
                         )
                     }
                 }
@@ -658,12 +661,12 @@ fun AssetScannerApp(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 12.dp),
+                        .padding(bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -690,7 +693,7 @@ fun AssetScannerApp(
                         onClick = { showAllDataDialog = true },
                         modifier = Modifier
                             .weight(1.2f)
-                            .height(48.dp)
+                            .height(42.dp)
                             .testTag("view_all_button"),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -720,7 +723,7 @@ fun AssetScannerApp(
                         onClick = { exportToNotes(viewModel.getExportText(rawAllAssets, selectedSortOrder)) },
                         modifier = Modifier
                             .weight(1.8f)
-                            .height(48.dp)
+                            .height(42.dp)
                             .testTag("sync_export_button"),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
@@ -768,19 +771,22 @@ fun AssetScannerApp(
                         value = manualTag,
                         onValueChange = {
                             manualTag = it.uppercase()
-                            isTagError = !Regex("[A-Za-z]{2}\\d{10}").matches(it.uppercase()) && !isValidSpaceFormat(it.uppercase())
+                            isTagError = !Regex("(?i)(CM|CZ|OM|OD|OP|ON|OE)\\d{9,10}").matches(it.uppercase()) && !isValidSpaceFormat(it.uppercase())
                         },
                         label = { Text("자산스티커 번호 (필수입력)") },
                         isError = isTagError,
                         supportingText = {
                             val formatted = formatAssetTag(manualTag)
                             val isSpaceFormat = isValidSpaceFormat(manualTag)
+                            val isNineDigits = (isSpaceFormat && formatted.length == 11) || (!isSpaceFormat && manualTag.length == 11)
                             if (isTagError) {
-                                  Text("영어 2자리 + 숫자 10자리 형식이 맞지 않습니다", color = MaterialTheme.colorScheme.error)
+                                  Text("영어 2자리 + 숫자 9~10자리 형식이 맞지 않습니다", color = MaterialTheme.colorScheme.error)
+                            } else if (isNineDigits) {
+                                  Text("⚠️ 경고: 9자리 번호는 인쇄 규격 오류입니다. (정상 10자리)", color = Color(0xFFBA1A1A))
                             } else if (isSpaceFormat) {
                                   Text("💡 치환 저장 완료 예정: $formatted", color = MaterialTheme.colorScheme.primary)
                             } else {
-                                  Text("xx0000000000 규격 준수 (자동 기종 매칭)")
+                                  Text("xx00000000(0) 규격 준수 (자동 기종 매칭)")
                             }
                         },
                         singleLine = true,
@@ -828,6 +834,7 @@ fun AssetScannerApp(
 
     // [DIALOG - ALTER OR EDIT RAW DETAILS]
     editingAsset?.let { asset ->
+        var editTag by remember { mutableStateOf(asset.tag) }
         var editName by remember { mutableStateOf(asset.name) }
         var editMemo by remember { mutableStateOf(asset.memo) }
 
@@ -839,20 +846,97 @@ fun AssetScannerApp(
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    val automaticCategory = viewModel.getCategoryByTag(asset.tag)
-                    Text(
-                        text = "스티커 고유 식별: ${asset.tag}",
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.primary
+                    val automaticCategory = viewModel.getCategoryByTag(editTag)
+                    
+                    OutlinedTextField(
+                        value = editTag,
+                        onValueChange = { editTag = it.uppercase() },
+                        label = { Text("자산스티커 번호") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
                     )
+
                     Text(
                         text = "자동 매칭 기종: $automaticCategory",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.outline
                     )
+
+                    if (editTag.length == 11) {
+                        val correctedSuggestion = suggestTagCorrection(editTag)
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = Color(0xFFBA1A1A).copy(alpha = 0.08f)
+                            ),
+                            border = androidx.compose.foundation.BorderStroke(
+                                1.dp,
+                                Color(0xFFBA1A1A).copy(alpha = 0.3f)
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(10.dp),
+                                verticalArrangement = Arrangement.spacedBy(6.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Warning,
+                                        contentDescription = "자릿수 오류",
+                                        tint = Color(0xFFBA1A1A),
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Text(
+                                        text = "자산스티커 자릿수 규격 오류 (9자리)",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 11.sp,
+                                        color = Color(0xFFBA1A1A)
+                                    )
+                                }
+                                Text(
+                                    text = "원래 10자리 규격(총 12자)이어야 하나, 인쇄 오류로 인해 9자리(총 11자)로 처리되었습니다.",
+                                    fontSize = 10.sp,
+                                    color = Color(0xFFBA1A1A).copy(alpha = 0.8f)
+                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = "보정 추천 번호",
+                                            fontSize = 9.sp,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Text(
+                                            text = correctedSuggestion,
+                                            fontFamily = FontFamily.Monospace,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 12.sp,
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
+                                    }
+                                    Button(
+                                        onClick = {
+                                            editTag = correctedSuggestion
+                                        },
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Color(0xFFBA1A1A)
+                                        ),
+                                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                                        modifier = Modifier.height(30.dp)
+                                    ) {
+                                        Text("10자리로 보정 적용", fontSize = 10.sp, color = Color.White)
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     OutlinedTextField(
                         value = editName,
@@ -887,10 +971,15 @@ fun AssetScannerApp(
 
                     Button(
                         onClick = {
+                            if (!Regex("(?i)(CM|CZ|OM|OD|OP|ON|OE)\\d{9,10}").matches(editTag)) {
+                                Toast.makeText(context, "영어 2자리 + 숫자 9~10자리 규격에 어긋납니다.", Toast.LENGTH_SHORT).show()
+                                return@Button
+                            }
                             viewModel.updateAssetDetails(
                                 asset.copy(
+                                    tag = editTag,
                                     name = editName,
-                                    category = viewModel.getCategoryByTag(asset.tag),
+                                    category = viewModel.getCategoryByTag(editTag),
                                     memo = editMemo
                                 )
                             )
@@ -989,6 +1078,7 @@ fun AssetScannerApp(
 fun AssetQueueItem(
     asset: AssetEntity,
     onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val dateStr = android.text.format.DateFormat.format("HH:mm", asset.timestamp).toString()
@@ -997,104 +1087,135 @@ fun AssetQueueItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onEditClick() },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
         ),
         border = androidx.compose.foundation.BorderStroke(
             1.dp,
-            MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+            MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
         )
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(horizontal = 10.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            // 1. Status icon
+            val statusColor = when (asset.status) {
+                "정상" -> Color(0xFF0061A4)
+                "점검필요" -> Color(0xFFE2B007)
+                "분실" -> Color(0xFFBA1A1A)
+                else -> Color.Gray
+            }
+            Icon(
+                imageVector = Icons.Default.CheckCircle,
+                contentDescription = asset.status,
+                tint = statusColor,
+                modifier = Modifier.size(16.dp)
+            )
+
+            // 2. Tag content (Strictly Single Line, prevents wrapping)
             Row(
+                modifier = Modifier.weight(1.3f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.weight(1f)
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                // Status icon circle
-                val statusColor = when (asset.status) {
-                    "정상" -> Color(0xFF0061A4)
-                    "점검필요" -> Color(0xFFE2B007)
-                    "분실" -> Color(0xFFBA1A1A)
-                    else -> Color.Gray
-                }
+                Text(
+                    text = asset.tag,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 11.sp,
+                    color = if (asset.tag.length == 11) Color(0xFFBA1A1A) else MaterialTheme.colorScheme.onBackground,
+                    maxLines = 1,
+                    softWrap = false
+                )
+                
                 Box(
                     modifier = Modifier
-                        .size(32.dp)
-                        .background(statusColor.copy(alpha = 0.15f), RoundedCornerShape(8.dp)),
-                    contentAlignment = Alignment.Center
+                        .background(
+                            if (asset.tag.length == 11) Color(0xFFBA1A1A).copy(alpha = 0.1f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                            RoundedCornerShape(4.dp)
+                        )
+                        .padding(horizontal = 4.dp, vertical = 1.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.CheckCircle,
-                        contentDescription = asset.status,
-                        tint = statusColor,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-
-                // Scan text details
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = asset.tag,
-                            fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 13.sp,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        // Category chip inline
-                        Box(
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.15f), RoundedCornerShape(4.dp))
-                                .padding(horizontal = 4.dp, vertical = 1.dp)
-                        ) {
-                            Text(asset.category, fontSize = 9.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                    }
                     Text(
-                        text = asset.name.ifEmpty { "장치 미지정" },
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        text = if (asset.tag.length == 11) "⚠️오류(9자)" else asset.category,
+                        fontSize = 8.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (asset.tag.length == 11) Color(0xFFBA1A1A) else MaterialTheme.colorScheme.primary,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        softWrap = false
                     )
-                    if (asset.memo.isNotEmpty()) {
-                        Text(
-                            text = asset.memo,
-                            fontSize = 9.sp,
-                            color = MaterialTheme.colorScheme.outlineVariant,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
                 }
             }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            // 3. Name & Memo Column
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "$dateStr 스캔됨",
-                    fontSize = 10.sp,
-                    color = MaterialTheme.colorScheme.outlineVariant
+                    text = asset.name.ifEmpty { "장치 미지정" },
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-                TextButton(
-                    onClick = onEditClick,
-                    modifier = Modifier.height(32.dp),
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.primary
+                if (asset.memo.isNotEmpty() && asset.memo != "카메라 자동 인식") {
+                    Text(
+                        text = asset.memo,
+                        fontSize = 9.sp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
+                }
+            }
+
+            // 4. Time, Edit & Delete Buttons
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = dateStr,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Light,
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                    maxLines = 1,
+                    softWrap = false
+                )
+                
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                        .clickable { onEditClick() }
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
-                    Text("수정", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "수정",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
+                        .clickable { onDeleteClick() }
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                ) {
+                    Text(
+                        text = "삭제",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             }
         }
@@ -1199,28 +1320,41 @@ fun SortButtonGroup(
 
 fun formatAssetTag(input: String): String {
     val trimmed = input.trim()
-    val regex = Regex("^([A-Za-z]{2}\\d+)\\s+(\\d+)$")
+    val regex = Regex("^(?i)(CM|CZ|OM|OD|OP|ON|OE)(\\d+)\\s+(\\d+)$")
     val matchResult = regex.matchEntire(trimmed) ?: return trimmed
     
-    val part1 = matchResult.groups[1]?.value ?: return trimmed
+    val prefix = matchResult.groups[1]?.value?.uppercase() ?: return trimmed
     val part2 = matchResult.groups[2]?.value ?: return trimmed
+    val part3 = matchResult.groups[3]?.value ?: return trimmed
     
-    val len1 = part1.length - 2 // digits in prefix
-    val targetLen2 = 10 - len1
-    if (targetLen2 <= 0) return trimmed
+    val len2 = part2.length
+    val targetLen = 10
+    val targetLenForPart3 = targetLen - len2
+    if (targetLenForPart3 <= 0) return trimmed
     
-    val paddedPart2 = part2.padStart(targetLen2, '0')
-    return part1 + paddedPart2
+    val paddedPart3 = part3.padStart(targetLenForPart3, '0')
+    return prefix + part2 + paddedPart3
 }
 
 fun isValidSpaceFormat(input: String): Boolean {
     val trimmed = input.trim()
-    val regex = Regex("^([A-Za-z]{2}\\d+)\\s+(\\d+)$")
+    val regex = Regex("^(?i)(CM|CZ|OM|OD|OP|ON|OE)(\\d+)\\s+(\\d+)$")
     val matchResult = regex.matchEntire(trimmed) ?: return false
-    val part1 = matchResult.groups[1]?.value ?: return false
     val part2 = matchResult.groups[2]?.value ?: return false
-    val len1 = part1.length - 2
-    return len1 >= 0 && (10 - len1) >= part2.length
+    val part3 = matchResult.groups[3]?.value ?: return false
+    val len2 = part2.length
+    val remainingFor10 = 10 - len2
+    return remainingFor10 >= part3.length
+}
+
+fun suggestTagCorrection(tag: String): String {
+    if (tag.length == 11) { // 2 letters + 9 digits (e.g. OD212200044)
+        val prefix = tag.substring(0, 2).uppercase()
+        val yearMonth = tag.substring(2, 6)
+        val serial = tag.substring(6)
+        return "$prefix$yearMonth" + "0" + serial
+    }
+    return tag
 }
 
 
